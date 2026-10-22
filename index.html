@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Assignment 5</title>
+    <style>
+        body { font-family: Arial; margin: 30px; }
+        input, button { padding: 6px; margin: 4px; }
+    </style>
+</head>
+<body>
+    <h1>Profile</h1>
+    <form id="profileForm">
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="number" id="birthYear" placeholder="Birth Year" required min="1920" max="2014">
+        <button type="submit">Create / Update Profile</button>
+    </form>
+    <p id="info"></p>
+
+    <h2>Hobbies</h2>
+    <ul id="list">
+        <li>Football</li>
+        <li>Music</li>
+        <li>Games</li>
+    </ul>
+    <input type="text" id="newItem" placeholder="New item">
+    <button id="addBtn">Add Item</button>
+    <button id="removeBtn">Remove Item</button>
+
+    <script>
+        document.getElementById("birthYear").max = new Date().getFullYear();
+
+        const userProfile = {
+            name: "Azamat",
+            birthYear: 2008,
+            isDeveloper: true,
+            hobbies: ["Football", "Music", "Games"]
+        };
+
+        function showInfo() {
+            const age = new Date().getFullYear() - userProfile.birthYear;
+            const text = userProfile.name + ", age: " + age + ", months: " + age * 12 + ", hobbies: " + userProfile.hobbies.length;
+            document.getElementById("info").textContent = text;
+            console.log(text);
+        }
+
+        showInfo();
+
+        document.getElementById("profileForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            userProfile.name = document.getElementById("username").value;
+            userProfile.birthYear = Number(document.getElementById("birthYear").value);
+            showInfo();
+        });
+
+        const list = document.getElementById("list");
+
+        document.getElementById("addBtn").addEventListener("click", function () {
+            const input = document.getElementById("newItem");
+            if (input.value === "") {
+                return;
+            }
+            const li = document.createElement("li");
+            li.textContent = input.value;
+            list.appendChild(li);
+            userProfile.hobbies.push(input.value);
+            input.value = "";
+            showInfo();
+        });
+
+        document.getElementById("removeBtn").addEventListener("click", function () {
+            if (list.lastElementChild) {
+                list.removeChild(list.lastElementChild);
+                userProfile.hobbies.pop();
+                showInfo();
+            }
+        });
+    </script>
+</body>
+</html>
